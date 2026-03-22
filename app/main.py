@@ -1,6 +1,11 @@
+from services.database import create_tables
+
+
 def main():
+    create_tables()
     crops = []
     expenses = []
+    amount = 0
 
     while True:
         print("\n === Farm Manager ===")
@@ -26,9 +31,12 @@ def main():
 
         elif choice == "3":
             item = input("Expense item: ")
-            amount = float(input("Amount: "))
-            expenses.append((item, amount))
-            print("Expense recorded.")
+            if item in crops:
+                amount = float(input("Amount: "))
+                expenses.append((item, amount))
+                print("Expense recorded.")
+            else:
+                print("Crop not found, Insert the right crop name to add its expenses")
 
         elif choice == "4":
             print("\nExpenses:")
@@ -43,7 +51,6 @@ def main():
             name = input("Crop to Delete: ")
             if name in crops:
                 crops.remove(name)
-                # item = name
                 expenses.remove((name, amount))
                 print(name, "is deleted.")
             else:
@@ -52,8 +59,8 @@ def main():
         elif choice == "6":
             print("\nDelete Expense:")
             item = input("Expense item to be deleted: ")
-            amount = float(input("Amount: "))
             if (item, amount) in expenses:
+                expenses.remove((item, amount))
                 amount = 0
                 expenses.append((item, amount))
                 print("Amount is removed, type new amount if present.")
