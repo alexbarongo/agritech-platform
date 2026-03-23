@@ -1,4 +1,12 @@
-from services.database import create_tables
+from services.database import (
+    create_tables,
+    add_crop,
+    get_crops,
+    add_expense,
+    get_expenses,
+    delete_crop,
+    delete_expenses_by_crop,
+)
 
 
 def main():
@@ -21,54 +29,63 @@ def main():
 
         if choice == "1":
             name = input("Crop name: ")
-            crops.append(name)
+            add_crop(name)
             print("Crop added.")
 
         elif choice == "2":
-            print("\nCrops:")
+            crops = get_crops()
             for crop in crops:
-                print("-", crop)
+                print(f"{crop[0]} - {crop[1]}")
 
         elif choice == "3":
+            crops = get_crops()
+
+            if not crops:
+                print("No crops available. Please add a crop firts.")
+                continue
+
+            print("\nAvailable Crops:")
+            for crop in crops:
+                print(f"{crop[0]} - {crop[1]}")
+
+            crop_id = int(input("Select crop ID: "))
             item = input("Expense item: ")
-            if item in crops:
-                amount = float(input("Amount: "))
-                expenses.append((item, amount))
-                print("Expense recorded.")
-            else:
-                print("Crop not found, Insert the right crop name to add its expenses")
+            amount = float(input("Amount: "))
+
+            add_expense(item, amount, crop_id)
+            print("Expense recorded.")
 
         elif choice == "4":
-            print("\nExpenses:")
-            total = 0
-            for item, amount in expenses:
-                print(f"{item}: {amount}")
-                total += amount
-                print("Total:", total)
+            expenses = get_expenses()
+
+            for expense in expenses:
+                print(f"{expense[0]} - {expense[1]} - {expense[2]}")
 
         elif choice == "5":
-            print("\nDelete Crop:")
-            name = input("Crop to Delete: ")
-            if name in crops:
-                crops.remove(name)
-                expenses.remove((name, amount))
-                print(name, "is deleted.")
-            else:
-                print("Crop not found.")
+            crops = get_crops()
+            for crop in crops:
+                print(f"{crop[0]} - {crop[1]}")
+            crop_id = int(input("Enter Crop ID to DELETE: "))
+            delete_crop(crop_id)
 
         elif choice == "6":
-            print("\nDelete Expense:")
-            item = input("Expense item to be deleted: ")
-            if (item, amount) in expenses:
-                expenses.remove((item, amount))
-                amount = 0
-                expenses.append((item, amount))
-                print("Amount is removed, type new amount if present.")
-            else:
-                print("Expense not found.")
+            crops = get_crops()
+
+            if not crops:
+                print("No crops available. Please add a crop first.")
+                continue
+
+            print("\n Crops:")
+            for crop in crops:
+                print(f"{crop[0]} - {crop[1]}")
+
+            crop_id = int(input("Enter crop ID: "))
+
+            delete_expenses_by_crop(crop_id)
+            print("All expenses for crop are deleteed.")
 
         elif choice == "7":
-            print("Goodbye!")
+            print("Exiting...")
             break
 
         else:
