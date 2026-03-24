@@ -99,3 +99,18 @@ def delete_expenses_by_crop(crop_id):
 
     conn.commit()
     conn.close()
+
+
+def get_expenses_with_crops():
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT expenses.id, crops.name, expenses.item, expenses.amount
+    FROM expenses
+    JOIN crops ON expenses.crop_id = crops.id
+    """)
+
+    data = cursor.fetchall()
+    conn.close()
+    return data
