@@ -6,6 +6,7 @@ from services.database import (
     delete_crop,
     delete_expenses_by_crop,
     get_total_expenses_per_crop,
+    clear_table,
 )
 
 
@@ -33,13 +34,23 @@ def create_expense():
     for crop in crops:
         print(f"{crop[0]} - {crop[1]}")
 
-    crop_id = input("Select crop iD: ")
+    try:
+        crop_id = int(input("Select crop ID: "))
+    except ValueError:
+        print("Invalid input: Please enter a number")
+        return
+
+    selected = get_crop_by_id(crop_id)
+    if selected is None:
+        print("No crop found with that ID.")
+        return
+
     item = input("Expense item: ")
 
     try:
         amount = float(input("Amount: "))
-    except:
-        print("Invalid amount")
+    except ValueError:
+        print("Invalid amount, please eneter number")
         return
 
     add_expense(item, amount, crop_id)
@@ -60,10 +71,16 @@ def list_expenses():
 
 def remove_crop():
     list_crops()
-    crop_id = input("Enter crop ID to delete: ")
 
-    if not crop_id.isdigit():
-        print("Invalid ID")
+    try:
+        crop_id = int(input("Enter crop ID to delete: "))
+    except ValueError:
+        print("Invalid ID, please enter a number")
+        return
+
+    selected = get_crop_by_id(crop_id)
+    if selected is None:
+        print("No crop found with that ID.")
         return
 
     delete_crop(int(crop_id))
@@ -72,10 +89,16 @@ def remove_crop():
 
 def remove_expense():
     list_crops()
-    expense_id = input("Enter expense ID to delete: ")
 
-    if not expense_id.isdigit():
-        print("Invalid ID")
+    try:
+        expense_id = int(input("Enter expense ID to delete: "))
+    except ValueError:
+        print("Invalid ID, please enter a number")
+        return
+
+    selected = get_crop_by_id(expense_id)
+    if selected is None:
+        print("No crop found with that ID.")
         return
 
     delete_expenses_by_crop(int(expense_id))
@@ -114,3 +137,22 @@ def show_expensive_crops():
 
     if not found:
         print("✅ No crops exceed the threshold.")
+
+
+def get_crop_by_id(crop_id):
+    crops = get_crops()
+    for crop in crops:
+        if crop[0] == crop_id:
+            return crop
+    return None
+
+
+def clear_all_data():
+    confirm = input("This will DELETE ALL crops and expenses. Type YES to confirm: ")
+
+    if confirm != "YES":
+        print("Cancelled.")
+        return
+
+    clear_table()
+    print("All data has been cleared!")

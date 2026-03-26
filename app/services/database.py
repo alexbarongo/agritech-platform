@@ -135,3 +135,16 @@ def get_total_expenses_per_crop():
 
     conn.close()
     return data
+
+
+def clear_table():
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM expenses")
+    cursor.execute("DELETE FROM crops")
+    cursor.execute("DELETE FROM sqlite_sequence WHERE name='crops'")
+    cursor.execute("DELETE FROM sqlite_sequence WHERE name='expenses'")
+
+    conn.commit()
+    conn.close()
