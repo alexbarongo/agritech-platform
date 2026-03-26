@@ -6,6 +6,8 @@ from services.logic import (
     list_expenses,
     remove_crop,
     remove_expense,
+    show_crop_summary,
+    show_expensive_crops,
 )
 
 
@@ -20,7 +22,9 @@ def main():
         print("4. View Expenses")
         print("5. Delete Crop")
         print("6. Delete Expense")
-        print("7. Exit")
+        print("7. Crop Summary")
+        print("8. Show Expensive Crops")
+        print("9. Exit")
 
         choice = input("Choose an option: ")
 
@@ -43,6 +47,12 @@ def main():
             remove_expense()
 
         elif choice == "7":
+            show_crop_summary()
+
+        elif choice == "8":
+            show_expensive_crops()
+
+        elif choice == "9":
             print("Exiting...")
             break
 

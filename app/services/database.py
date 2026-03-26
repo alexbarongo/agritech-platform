@@ -114,3 +114,24 @@ def get_expenses_with_crops():
     data = cursor.fetchall()
     conn.close()
     return data
+
+
+def get_total_expenses_per_crop():
+    conn = connect()
+    cursor = conn.cursor()
+
+    query = """
+    SELECT 
+        crops.name, 
+        COALESCE(SUM(expenses.amount), 0), 
+        COUNT(expenses.id)
+    FROM crops
+    LEFT JOIN expenses ON expenses.crop_id = crops.id
+    GROUP BY crops.name
+    ORDER BY COALESCE(SUM(expenses.amount), 0) DESC
+    """
+    cursor.execute(query)
+    data = cursor.fetchall()
+
+    conn.close()
+    return data

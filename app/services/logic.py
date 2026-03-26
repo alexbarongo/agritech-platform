@@ -5,6 +5,7 @@ from services.database import (
     get_expenses_with_crops,
     delete_crop,
     delete_expenses_by_crop,
+    get_total_expenses_per_crop,
 )
 
 
@@ -79,3 +80,37 @@ def remove_expense():
 
     delete_expenses_by_crop(int(expense_id))
     print("Expenses Deleted.")
+
+
+def show_crop_summary():
+    data = get_total_expenses_per_crop()
+
+    print("\n=== Crop Expense Summary ===")
+    for row in data:
+        name = row[0]
+        total = row[1]
+        count = row[2]
+
+        avg = total / count if count != 0 else 0
+
+        print(f"{name} -> Total: {total: .2f} | Entries: {count} | Avg: {avg: .2f}")
+
+
+def show_expensive_crops():
+    data = get_total_expenses_per_crop()
+    print("\n=== Expensive Crops Alert ===")
+
+    threshold = float(input("Enter expense threshold: "))
+
+    found = False
+
+    for row in data:
+        name = row[0]
+        total = row[1]
+
+        if total > threshold:
+            print(f"⚠️ {name} is expensive! Total: {total:.2f}")
+            found = True
+
+    if not found:
+        print("✅ No crops exceed the threshold.")
