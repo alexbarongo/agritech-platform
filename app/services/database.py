@@ -16,7 +16,13 @@ def create_tables():
     cursor.execute(""" 
     CREATE TABLE IF NOT EXISTS crops ( 
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
-        name TEXT NOT NULL
+        name TEXT NOT NULL,
+        planting_date TEXT,
+        field_size REAL,
+        planted_quantity INTEGER,
+        harvest_date TEXT,
+        harvest_quantity REAL,
+        selling_price REAL
         )
     """)
 
@@ -147,6 +153,30 @@ def clear_table():
     cursor.execute("DELETE FROM crops")
     cursor.execute("DELETE FROM sqlite_sequence WHERE name='crops'")
     cursor.execute("DELETE FROM sqlite_sequence WHERE name='expenses'")
+
+    conn.commit()
+    conn.close()
+
+
+def migrate_crops_table():
+    conn = connect()
+    cursor = conn.cursor()
+
+    new_columns = [
+        ("planting_date", "TEXT"),
+        ("field_size", "REAL"),
+        ("planted_quantity", "INTEGER"),
+        ("harvest_date", "TEXT"),
+        ("harvest_quantity", "REAL"),
+        ("selling_price", "REAL"),
+    ]
+
+    for column_name, column_type in new_columns:
+        try:
+            cursor.execute(f"ALTER TABLE crops ADD COLUMN {column_name} {column_type}")
+
+        except Exception as e:
+            print(f"Column {column_name} skipped: {e}")
 
     conn.commit()
     conn.close()

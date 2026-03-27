@@ -1,4 +1,7 @@
-from services.database import create_tables
+from services.database import (
+    create_tables,
+    migrate_crops_table,
+)
 from services.logic import (
     create_crop,
     list_crops,
@@ -14,6 +17,7 @@ from services.logic import (
 
 def main():
     create_tables()
+    migrate_crops_table()
 
     while True:
         print("\n === Farm Manager ===")

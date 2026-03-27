@@ -1,5 +1,15 @@
 from fastapi import FastAPI
 from api.routes import crops, expenses
+from contextlib import asynccontextmanager
+from services.database import create_tables, migrate_crops_table
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    create_tables()
+    migrate_crops_table()
+    yield
+
 
 app = FastAPI(
     title="AgriTech Platform",
