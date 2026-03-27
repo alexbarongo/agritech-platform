@@ -7,20 +7,62 @@ from services.database import (
     delete_expenses_by_crop,
     get_total_expenses_per_crop,
     clear_table,
+    get_profit_report,
+    record_harvest,
 )
 
 
 def create_crop():
-    name = input("Crop name: ")
-    add_crop(name)
-    print("Crop added.")
+    print("\n=== Add New Crop===")
+
+    name = input("Crop name: ").strip()
+    if not name:
+        print("Crop name cannot be empty!")
+        return
+
+    planting_date = input("Planting Date (YYYY-MM-DD) or press Enter to skip: ").strip()
+
+    field_size = input("Field size in acres or press Enter to skip: ").strip()
+    try:
+        field_size = float(field_size) if field_size else None
+    except ValueError:
+        print("Invalid field size. Saving as empty.")
+        field_size = None
+
+    planted_quantity = input("Quantity planted or press Enter to skip: ").strip()
+    try:
+        planted_quantity = int(planted_quantity) if planted_quantity else None
+    except ValueError:
+        print("Invalid quanttity. Saving as empty.")
+        planted_quantity = None
+
+    add_crop(name, planting_date, field_size, planted_quantity)
+    print(f"{name} added successfully.")
 
 
 def list_crops():
     crops = get_crops()
     print("\nCrops:")
     for crop in crops:
-        print(f"{crop[0]} - {crop[1]}")
+        crop_id = crop[0] if crop[0] is not None else "Not recorded"
+        name = crop[1] if crop[1] is not None else "Not recorded"
+        planting_date = crop[2] if crop[2] is not None else "Not recorded"
+        field_size = crop[3] if crop[3] is not None else "Not recorded"
+        qty_planted = crop[4] if crop[4] is not None else "Not recorded"
+        harvest_date = crop[5] if crop[5] is not None else "Not recorded"
+        qty_harvested = crop[6] if crop[6] is not None else "Not recorded"
+        selling_price = crop[7] if crop[7] is not None else "Not recorded"
+
+        print(
+            f"=== Crop {crop_id} === \n"
+            f"Name          :{name} \n"
+            f"Planting Date :{planting_date} \n"
+            f"Field Size    :{field_size} acres \n"
+            f"Qty Planted   :{qty_planted} \n"
+            f"Harvest Date  :{harvest_date} \n"
+            f"Qty Harvested :{qty_harvested} kg \n"
+            f"Selling Price :{selling_price}\n"
+        )
 
 
 def create_expense():
@@ -156,3 +198,72 @@ def clear_all_data():
 
     clear_table()
     print("All data has been cleared!")
+
+
+def show_profit_report():
+    data = get_profit_report()
+
+    print("\n=== Profit Report ===")
+
+    for row in data:
+        crop_id = row[0]
+        name = row[1]
+        harvest_qty = row[2]
+        selling_price = row[3]
+        total_expenses = row[4]
+        revenue = row[5]
+        profit = row[6]
+
+        status = "PROFIT" if profit > 0 else "LOSS" if profit < 0 else "BREAK EVEN"
+
+        print(
+            f"=== {name.capitalize()} ===\n"
+            f"Harvest Qty   : {harvest_qty}\n"
+            f"Selling Price : {selling_price}\n"
+            f"Revenue       : {revenue:.2f}\n"
+            f"Expenses      : {total_expenses:.2f}\n"
+            f"Profit        : {profit:.2f} ({status})\n"
+        )
+
+
+def add_harvest():
+    crops = get_crops()
+
+    if not crops:
+        print("No crops available")
+        return
+
+    print("\nAvailable Crops:")
+    for crop in crops:
+        name = crop[1]
+        planted = crop[2] if crop[2] is not None else "Not recorded"
+        print(f"{crop[0]} - {name} (Planted: {planted})")
+
+    crop_id = input("Enter crop ID to record harvest: ").strip()
+    try:
+        crop_id = int(crop_id)
+    except ValueError:
+        print("Invalid ID.")
+        return
+
+    harvest_qty = input("Harvest quantity (Kg): ").strip()
+    try:
+        harvest_qty = float(harvest_qty)
+    except ValueError:
+        print("Harvest date cannot be empty!")
+        return
+
+    harvest_date = input("Harvest date (YYYY-MM-DD): ").strip()
+    if not harvest_date:
+        print("Harvest date cannot be empty!")
+        return
+
+    selling_price = input("Selling Price per Kg: ").strip()
+    try:
+        selling_price = float(selling_price)
+    except ValueError:
+        print("Invalid price.")
+        return
+
+    record_harvest(crop_id, harvest_qty, harvest_date, selling_price)
+    print("Harvest recorded successfully!")

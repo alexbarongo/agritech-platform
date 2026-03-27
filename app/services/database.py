@@ -40,11 +40,35 @@ def create_tables():
     conn.close()
 
 
-def add_crop(name):
+def add_crop(
+    name,
+    planting_date=None,
+    field_size=None,
+    planted_quantity=None,
+    harvest_date=None,
+    harvest_quantity=None,
+    selling_price=None,
+):
     conn = connect()
     cursor = conn.cursor()
 
-    cursor.execute("INSERT INTO crops (name) VALUES (?)", (name,))
+    cursor.execute(
+        """
+        INSERT INTO crops (
+            name, planting_date,field_size, planted_quantity,
+            harvest_date, harvest_quantity, selling_price
+    ) VALUES (?,?,?,?,?,?,?)
+    """,
+        (
+            name,
+            planting_date,
+            field_size,
+            planted_quantity,
+            harvest_date,
+            harvest_quantity,
+            selling_price,
+        ),
+    )
 
     conn.commit()
     conn.close()
@@ -54,7 +78,12 @@ def get_crops():
     conn = connect()
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM crops")
+    cursor.execute("""
+    SELECT id, name, planting_date, field_size,
+           planted_quantity, harvest_date,
+           harvest_quantity,selling_price
+    FROM crops
+    """)
     crops = cursor.fetchall()
 
     conn.close()
@@ -177,6 +206,50 @@ def migrate_crops_table():
 
         except Exception as e:
             print(f"Column {column_name} skipped: {e}")
+
+    conn.commit()
+    conn.close()
+
+
+def get_profit_report():
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            crops.id,
+            crops.name,
+            crops.harvest_quantity,
+            crops.selling_price,
+            COALESCE(SUM(expenses.amount), 0) as total_expenses,
+            COALESCE(crops.harvest_quantity * crops.selling_price, 0) as revenue,
+            COALESCE(crops.harvest_quantity * crops.selling_price, 0) -
+            COALESCE(SUM(expenses.amount), 0) as profit
+        FROM crops
+        LEFT JOIN expenses ON expenses.crop_id = crops.id
+        GROUP BY crops.id
+        ORDER BY profit DESC
+    """)
+
+    data = cursor.fetchall()
+    conn.close()
+    return data
+
+
+def record_harvest(crop_id, harvest_quantity, harvest_date, selling_price):
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        UPDATE crops
+        SET harvest_quantity = ?,
+            harvest_date = ?,
+            selling_price = ?
+        WHERE id = ?
+    """,
+        (harvest_quantity, harvest_date, selling_price, crop_id),
+    )
 
     conn.commit()
     conn.close()

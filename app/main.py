@@ -12,6 +12,8 @@ from services.logic import (
     show_crop_summary,
     show_expensive_crops,
     clear_all_data,
+    show_profit_report,
+    add_harvest,
 )
 
 
@@ -30,7 +32,9 @@ def main():
         print("7. Crop Summary")
         print("8. Show Expensive Crops")
         print("9. CLEAR ALL")
-        print("10. Exist")
+        print("10. Add Harvest")
+        print("11. Profit Report")
+        print("12. Exit")
 
         choice = input("Choose an option: ")
 
@@ -62,6 +66,12 @@ def main():
             clear_all_data()
 
         elif choice == "10":
+            add_harvest()
+
+        elif choice == "11":
+            show_profit_report()
+
+        elif choice == "12":
             print("Exiting...")
             break
 
