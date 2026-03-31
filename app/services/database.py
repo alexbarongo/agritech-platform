@@ -1,5 +1,5 @@
-import sqlite3
 import os
+import sqlite3
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_NAME = os.path.join(BASE_DIR, "..", "data", "farm.db")
@@ -13,23 +13,37 @@ def create_tables():
     conn = connect()
     cursor = conn.cursor()
 
-    cursor.execute(""" 
-    CREATE TABLE IF NOT EXISTS crops ( 
-        id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    cursor.execute("PRAGMA foreign_keys = ON")
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS users(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            email TEXT NOT NULL UNIQUE,
+            password TEXT NOT NULL
+            create_ar TEXT DEFAULT (datetime('now'))
+        )
+    """)
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS crops (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
         name TEXT NOT NULL,
         planting_date TEXT,
         field_size REAL,
         planted_quantity INTEGER,
         harvest_date TEXT,
         harvest_quantity REAL,
-        selling_price REAL
+        selling_price REAL,
+        FOREIGN KEY (user_id) REFERENCES user(user_id)
         )
     """)
 
-    cursor.execute(""" 
+    cursor.execute("""
     CREATE TABLE IF NOT EXISTS expenses (
-        id INTEGER PRIMARY KEY AUTOINCREMENT, 
-        item TEXT NOT NULL, 
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        item TEXT NOT NULL,
         amount REAL NOT NULL,
         crop_id INTEGER,
         FOREIGN KEY (crop_id) REFERENCES crops(id)
@@ -158,9 +172,9 @@ def get_total_expenses_per_crop():
     cursor = conn.cursor()
 
     query = """
-    SELECT 
-        crops.name, 
-        COALESCE(SUM(expenses.amount), 0), 
+    SELECT
+        crops.name,
+        COALESCE(SUM(expenses.amount), 0),
         COUNT(expenses.id)
     FROM crops
     LEFT JOIN expenses ON expenses.crop_id = crops.id
@@ -253,3 +267,37 @@ def record_harvest(crop_id, harvest_quantity, harvest_date, selling_price):
 
     conn.commit()
     conn.close()
+
+    def create_user(name, email, hashed_password):
+        conn = connect()
+        cursor = conn.cursor()
+
+        try:
+            cursor.execute(
+                """
+                INSERT INTO users(name, email, password)
+                VALUE (?,?,?)
+            """,
+                (name, email, hashed_password),
+            )
+            conn.commit()
+            return True
+        except Exception as e:
+            print(f"Error creating user: {e}")
+            return False
+        finally:
+            conn.close()
+
+    def get_user_by_email(email):
+        conn = connect()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            SELECT id,name, email, password FROM users WHERE email = ?,
+            (email,)
+        """)
+
+        user = cursor.fetchone()
+        conn.close()
+
+        return user

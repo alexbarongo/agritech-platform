@@ -1,19 +1,16 @@
-from services.database import (
-    create_tables,
-    migrate_crops_table,
-)
+from services.database import create_tables, migrate_crops_table
 from services.logic import (
+    add_harvest,
+    clear_all_data,
     create_crop,
-    list_crops,
     create_expense,
+    list_crops,
     list_expenses,
     remove_crop,
     remove_expense,
     show_crop_summary,
     show_expensive_crops,
-    clear_all_data,
     show_profit_report,
-    add_harvest,
 )
 
 
