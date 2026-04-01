@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from api.routes import crops, expenses
+from api.routes import auth, crops, expenses
 from contextlib import asynccontextmanager
 from services.database import create_tables, migrate_crops_table
 
@@ -19,6 +19,7 @@ app = FastAPI(
 
 app.include_router(crops.router, prefix="/crops", tags=["Crops"])
 app.include_router(expenses.router, prefix="/expenses", tags=["Expenses"])
+app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
 
 
 @app.get("/")

@@ -20,8 +20,8 @@ def create_tables():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             email TEXT NOT NULL UNIQUE,
-            password TEXT NOT NULL
-            create_ar TEXT DEFAULT (datetime('now'))
+            password TEXT NOT NULL,
+            created_at TEXT DEFAULT (datetime('now'))
         )
     """)
 
@@ -36,7 +36,7 @@ def create_tables():
         harvest_date TEXT,
         harvest_quantity REAL,
         selling_price REAL,
-        FOREIGN KEY (user_id) REFERENCES user(user_id)
+        FOREIGN KEY (user_id) REFERENCES users(id)
         )
     """)
 
@@ -52,6 +52,40 @@ def create_tables():
 
     conn.commit()
     conn.close()
+
+
+def create_user(name, email, hashed_password):
+    conn = connect()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(
+            """
+                INSERT INTO users (name, email, password)
+                VALUES (?, ?, ?)
+            """,
+            (name, email, hashed_password),
+        )
+        conn.commit()
+        return True
+    except Exception as e:
+        print(f"Error creating user: {e}")
+        return False
+    finally:
+        conn.close()
+
+
+def get_user_by_email(email):
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT id, name, email, password FROM users WHERE email = ?", (email,)
+    )
+
+    user = cursor.fetchone()
+    conn.close()
+    return user
 
 
 def add_crop(
@@ -267,37 +301,3 @@ def record_harvest(crop_id, harvest_quantity, harvest_date, selling_price):
 
     conn.commit()
     conn.close()
-
-    def create_user(name, email, hashed_password):
-        conn = connect()
-        cursor = conn.cursor()
-
-        try:
-            cursor.execute(
-                """
-                INSERT INTO users(name, email, password)
-                VALUE (?,?,?)
-            """,
-                (name, email, hashed_password),
-            )
-            conn.commit()
-            return True
-        except Exception as e:
-            print(f"Error creating user: {e}")
-            return False
-        finally:
-            conn.close()
-
-    def get_user_by_email(email):
-        conn = connect()
-        cursor = conn.cursor()
-
-        cursor.execute("""
-            SELECT id,name, email, password FROM users WHERE email = ?,
-            (email,)
-        """)
-
-        user = cursor.fetchone()
-        conn.close()
-
-        return user
