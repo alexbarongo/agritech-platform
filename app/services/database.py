@@ -160,13 +160,13 @@ def get_crops_by_user(user_id: int):
     return crops
 
 
-def add_expense(item, amount, crop_id):
+def add_expense(user_id, item, amount, crop_id):
     conn = connect()
     cursor = conn.cursor()
 
     cursor.execute(
-        "INSERT INTO expenses (item, amount, crop_id) VALUES (?, ?, ?)",
-        (item, amount, crop_id),
+        "INSERT INTO expenses (user_id, item, amount, crop_id) VALUES (?, ?, ?, ?)",
+        (user_id, item, amount, crop_id),
     )
 
     conn.commit()
@@ -178,6 +178,17 @@ def get_expenses():
     cursor = conn.cursor()
 
     cursor.execute("SELECT * FROM expenses")
+    expenses = cursor.fetchall()
+
+    conn.close()
+    return expenses
+
+
+def get_expenses_by_user(user_id: int):
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM expenses WHERE user_id = ?", (user_id))
     expenses = cursor.fetchall()
 
     conn.close()
@@ -223,6 +234,25 @@ def get_expenses_with_crops():
     return data
 
 
+def get_expenses_with_crops_by_user(user_id: int):
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+    SELECT expenses.id, crops.name, expenses.item, expenses.amount
+    FROM expenses
+    JOIN crops ON expenses.crop_id = crops.id
+    WHERE user_id = ?
+    """,
+        (user_id,),
+    )
+
+    data = cursor.fetchall()
+    conn.close()
+    return data
+
+
 def get_total_expenses_per_crop():
     conn = connect()
     cursor = conn.cursor()
@@ -237,6 +267,30 @@ def get_total_expenses_per_crop():
     GROUP BY crops.name
     ORDER BY COALESCE(SUM(expenses.amount), 0) DESC
     """
+    cursor.execute(query)
+    data = cursor.fetchall()
+
+    conn.close()
+    return data
+
+
+def get_total_expenses_per_crop_by_user(user_id: int):
+    conn = connect()
+    cursor = conn.cursor()
+
+    query = """
+    SELECT
+        crops.name,
+        COALESCE(SUM(expenses.amount), 0),
+        COUNT(expenses.id)
+    FROM crops
+    LEFT JOIN expenses ON expenses.crop_id = crops.id
+    GROUP BY crops.name
+    ORDER BY COALESCE(SUM(expenses.amount), 0) DESC
+    WHERE user_id = ?
+    """, (
+        user_id,
+    )
     cursor.execute(query)
     data = cursor.fetchall()
 
@@ -275,6 +329,26 @@ def migrate_crops_table():
         try:
             cursor.execute(f"ALTER TABLE crops ADD COLUMN {column_name} {column_type}")
 
+        except Exception as e:
+            print(f"Column {column_name} skipped: {e}")
+
+    conn.commit()
+    conn.close()
+
+
+def migrate_expenses_table():
+    conn = connect()
+    cursor = conn.cursor()
+
+    new_columns = [
+        ("user_id", "INTEGER"),
+    ]
+
+    for column_name, column_type in new_columns:
+        try:
+            cursor.execute(
+                f"ALTER TABLE expenses ADD COLUMN {column_name} {column_type}"
+            )
         except Exception as e:
             print(f"Column {column_name} skipped: {e}")
 

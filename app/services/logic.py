@@ -1,13 +1,13 @@
 from services.database import (
     add_crop,
-    get_crops,
     add_expense,
-    get_expenses_with_crops,
+    clear_table,
     delete_crop,
     delete_expenses_by_crop,
-    get_total_expenses_per_crop,
-    clear_table,
+    get_crops,
+    get_expenses_with_crops,
     get_profit_report,
+    get_total_expenses_per_crop,
     record_harvest,
 )
 
@@ -95,7 +95,7 @@ def create_expense():
         print("Invalid amount, please eneter number")
         return
 
-    add_expense(item, amount, crop_id)
+    add_expense(1, item, amount, crop_id)
     print("Expenses recorderd.")
 
 
