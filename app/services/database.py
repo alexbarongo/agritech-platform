@@ -188,7 +188,7 @@ def get_expenses_by_user(user_id: int):
     conn = connect()
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM expenses WHERE user_id = ?", (user_id))
+    cursor.execute("SELECT * FROM expenses WHERE user_id = ?", (user_id,))
     expenses = cursor.fetchall()
 
     conn.close()
@@ -243,7 +243,7 @@ def get_expenses_with_crops_by_user(user_id: int):
     SELECT expenses.id, crops.name, expenses.item, expenses.amount
     FROM expenses
     JOIN crops ON expenses.crop_id = crops.id
-    WHERE user_id = ?
+    WHERE expenses.user_id = ?
     """,
         (user_id,),
     )
@@ -285,13 +285,11 @@ def get_total_expenses_per_crop_by_user(user_id: int):
         COUNT(expenses.id)
     FROM crops
     LEFT JOIN expenses ON expenses.crop_id = crops.id
+    WHERE user_id = ?
     GROUP BY crops.name
     ORDER BY COALESCE(SUM(expenses.amount), 0) DESC
-    WHERE user_id = ?
-    """, (
-        user_id,
-    )
-    cursor.execute(query)
+    """
+    cursor.execute(query, (user_id,))
     data = cursor.fetchall()
 
     conn.close()
