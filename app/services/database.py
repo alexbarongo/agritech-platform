@@ -89,6 +89,7 @@ def get_user_by_email(email):
 
 
 def add_crop(
+    user_id,
     name,
     planting_date=None,
     field_size=None,
@@ -103,11 +104,12 @@ def add_crop(
     cursor.execute(
         """
         INSERT INTO crops (
-            name, planting_date,field_size, planted_quantity,
+            user_id, name, planting_date,field_size, planted_quantity,
             harvest_date, harvest_quantity, selling_price
-    ) VALUES (?,?,?,?,?,?,?)
+    ) VALUES (?,?,?,?,?,?,?, ?)
     """,
         (
+            user_id,
             name,
             planting_date,
             field_size,
@@ -132,8 +134,28 @@ def get_crops():
            harvest_quantity,selling_price
     FROM crops
     """)
-    crops = cursor.fetchall()
 
+    crops = cursor.fetchall()
+    conn.close()
+    return crops
+
+
+def get_crops_by_user(user_id: int):
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+    SELECT id, name, planting_date, field_size,
+           planted_quantity, harvest_date,
+           harvest_quantity,selling_price
+    FROM crops
+    WHERE user_id = ?
+    """,
+        (user_id,),
+    )
+
+    crops = cursor.fetchall()
     conn.close()
     return crops
 
@@ -240,6 +262,7 @@ def migrate_crops_table():
     cursor = conn.cursor()
 
     new_columns = [
+        ("user_id", "INTEGER"),
         ("planting_date", "TEXT"),
         ("field_size", "REAL"),
         ("planted_quantity", "INTEGER"),
