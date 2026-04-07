@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgriTech - Login</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+      <div class="auth-logo">
+        <h1>🌱 AgriTech</h1>
+        <p>Farm Management Platform</p>
+      </div>
+      <div class="auth-box">
+        <h2>Register</h2>
+
+        <div id="error-message" class="error-message hidden"></div>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="name" id="name" placeholder="Enter your full name">
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="farm@agritech.com">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Your password">
+        </div>
+        <button id="register-btn" class="btn-primary">Create account</button>
+
+        <p class="auth-switch">
+        Already have an account?
+        <a href="/login">Sign In here</a>
+        </p>
+      </div>
+    </div>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
