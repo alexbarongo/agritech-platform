@@ -90,7 +90,7 @@ if (registerBtn) {
       const data = await response.json();
 
       if (response.ok) {
-        saveToken(data.access_token);
+//        saveToken(data.access_token); // maybe i should let the user login manually without the system holding the token
         window.location.href = '/login';
       } else {
         errorDiv.textContent = data.detail || 'Registration failed';
