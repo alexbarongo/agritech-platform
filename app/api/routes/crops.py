@@ -25,7 +25,13 @@ def list_crops(current_user: dict = Depends(get_current_user)):
 
 
 @router.post("/")
-def create_crop(name: str, current_user: dict = Depends(get_current_user)):
+def create_crop(
+    name: str,
+    planting_date: str = None,
+    field_size: float = None,
+    planted_quantity: int = None,
+    current_user: dict = Depends(get_current_user),
+):
     user_id = current_user["user_id"]
-    add_crop(user_id, name)
+    add_crop(user_id, name, planting_date, field_size, planted_quantity)
     return {"message": "Crop added", "name": name}
