@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AgriTech - My Crops</title>
+    <link href="/static/css/style.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="/static/images/ATVI-logo.png" />
+  </head>
+  <body class="dashboard-page">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <img
+          src="/static/images/ATVI-logo-wb.png"
+          class="img-logo"
+          alt="Agritech brand logo"
+          style="width: 40px; height: 40px; border-radius: 5px"
+        />
+        <h2>AgriTech</h2>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="/dashboard" class="nav-item">
+          <img
+            src="/static/images/dashboard.png"
+            style="width: 20px; height: 20px"
+          />
+          Dashboard
+        </a>
+        <a href="/crops-page" class="nav-item active">
+          <img
+            src="/static/images/crops.png"
+            style="width: 20px; height: 20px"
+          />
+          My Crops
+        </a>
+        <a href="/expenses" class="nav-item">
+          <img
+            src="/static/images/expenses.png"
+            style="width: 20px; height: 20px"
+          />
+          Expenses
+        </a>
+        <a href="/reports" class="nav-item">
+          <img
+            src="/static/images/report.png"
+            style="width: 20px; height: 20px"
+          />
+          Reports
+        </a>
+        <a href="/profile" class="nav-item">
+          <img
+            src="/static/images/profile.png"
+            style="width: 20px; height: 20px"
+          />
+          Profile
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <button id="logout-btn" class="btn-logout">Sign Out</button>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+      <div class="topbar">
+        <div class="topbar-greeting">
+          <h1>
+            <img
+              src="/static/images/crops.png"
+              style="width: 40px; height: 40px"
+            />
+            My Crops
+          </h1>
+          <p>Manage your crops and record harvests</p>
+        </div>
+        <button class="btn-add" id="add-crop-btn">+ Add Crop</button>
+      </div>
+
+      <div class="section">
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Crop</th>
+                <th>Planting Date</th>
+                <th>Field Size</th>
+                <th>Qty Planted</th>
+                <th>Harvest Date</th>
+                <th>Harvest Qty</th>
+                <th>Selling Price</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="crops-tbody">
+              <tr>
+                <td colspan="9" class="loading">Loading...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADD CROP MODAL -->
+    <div class="modal hidden" id="add-crop-modal">
+      <div class="modal-box">
+        <h2>Add New Crop</h2>
+        <div class="form-group">
+          <label>Crop Name *</label>
+          <input type="text" id="crop-name" placeholder="e.g. Maize" />
+        </div>
+        <div class="form-group">
+          <label>Planting Date</label>
+          <input type="date" id="crop-planting-date" />
+        </div>
+        <div class="form-group">
+          <label>Field Size (acres)</label>
+          <input
+            type="number"
+            id="crop-field-size"
+            placeholder="e.g. 2.5"
+            step="0.1"
+          />
+        </div>
+        <div class="form-group">
+          <label>Quantity Planted</label>
+          <input type="number" id="crop-quantity" placeholder="e.g. 100" />
+        </div>
+        <div class="error-message hidden" id="add-modal-error"></div>
+        <div class="modal-actions">
+          <button id="cancel-add-btn" class="btn-secondary">Cancel</button>
+          <button id="save-crop-btn" class="btn-primary">Save Crop</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HARVEST MODAL -->
+    <div class="modal hidden" id="harvest-modal">
+      <div class="modal-box">
+        <h2>Record Harvest</h2>
+        <input type="hidden" id="harvest-crop-id" />
+        <div class="form-group">
+          <label>Harvest Quantity (kg)</label>
+          <input type="number" id="harvest-qty" placeholder="e.g. 500" />
+        </div>
+        <div class="form-group">
+          <label>Harvest Date</label>
+          <input type="date" id="harvest-date" />
+        </div>
+        <div class="form-group">
+          <label>Selling Price per kg (TZS)</label>
+          <input type="number" id="selling-price" placeholder="e.g. 1500" />
+        </div>
+        <div class="error-message hidden" id="harvest-modal-error"></div>
+        <div class="modal-actions">
+          <button id="cancel-harvest-btn" class="btn-secondary">Cancel</button>
+          <button id="save-harvest-btn" class="btn-primary">
+            Record Harvest
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DELETE CONFIRM MODAL -->
+    <div class="modal hidden" id="delete-modal">
+      <div class="modal-box">
+        <h2>Delete Crop</h2>
+        <p style="color: #718096; margin-bottom: 24px">
+          Are you sure? This will also delete all expenses linked to this crop.
+          This cannot be undone.
+        </p>
+        <input type="hidden" id="delete-crop-id" />
+        <div class="modal-actions">
+          <button id="cancel-delete-btn" class="btn-secondary">Cancel</button>
+          <button
+            id="confirm-delete-btn"
+            class="btn-primary"
+            style="background: #c53030"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/crops.js"></script>
+  </body>
+</html>

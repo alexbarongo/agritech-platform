@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AgriTech - Dashboard</title>
     <link href="/static/css/style.css" rel="stylesheet" />
-    <link rel="icon" type="image/png" href="/static/images/ATVI-logo-wb.png" />
+    <link rel="icon" type="image/png" href="/static/images/ATVI-logo.png" />
   </head>
   <body class="dashboard-page">
     <!-- SIDEBAR -->
@@ -20,11 +20,41 @@
         <h2>AgriTech</h2>
       </div>
       <nav class="sidebar-nav">
-        <a href="/dashboard" class="nav-item active">📊 Dashboard</a>
-        <a href="/crops" class="nav-item">🌾 My Crops</a>
-        <a href="/expenses" class="nav-item">💰 Expenses</a>
-        <a href="/reports" class="nav-item">📈 Reports</a>
-        <a href="/profile" class="nav-item">👤 Profile</a>
+        <a href="/dashboard" class="nav-item active">
+          <img
+            src="/static/images/dashboard.png"
+            style="width: 20px; height: 20px"
+          />
+          Dashboard
+        </a>
+        <a href="/crops-page" class="nav-item">
+          <img
+            src="/static/images/crops.png"
+            style="width: 20px; height: 20px"
+          />
+          My Crops
+        </a>
+        <a href="/expenses" class="nav-item">
+          <img
+            src="/static/images/expenses.png"
+            style="width: 20px; height: 20px"
+          />
+          Expenses
+        </a>
+        <a href="/reports" class="nav-item">
+          <img
+            src="/static/images/report.png"
+            style="width: 20px; height: 20px"
+          />
+          Reports
+        </a>
+        <a href="/profile" class="nav-item">
+          <img
+            src="/static/images/profile.png"
+            style="width: 20px; height: 20px"
+          />
+          Profile
+        </a>
       </nav>
       <div class="sidebar-footer">
         <button id="logout-btn" class="btn-logout">Sign Out</button>
@@ -44,28 +74,48 @@
       <!-- SUMMARY CARDS -->
       <div class="cards-grid">
         <div class="card">
-          <div class="card-icon">🌾</div>
+          <div class="card-icon">
+            <img
+              src="/static/images/crops.png"
+              style="width: 40px; height: 40px"
+            />
+          </div>
           <div class="card-info">
             <p class="card-label">Total Crops</p>
             <h2 class="card-value" id="total-crops">--</h2>
           </div>
         </div>
         <div class="card">
-          <div class="card-icon">💸</div>
+          <div class="card-icon">
+            <img
+              src="/static/images/expenses.png"
+              style="width: 40px; height: 40px"
+            />
+          </div>
           <div class="card-info">
             <p class="card-label">Total Expenses</p>
             <h2 class="card-value" id="total-expenses">--</h2>
           </div>
         </div>
         <div class="card">
-          <div class="card-icon">📦</div>
+          <div class="card-icon">
+            <img
+              src="/static/images/harvest.png"
+              style="width: 40px; height: 40px"
+            />
+          </div>
           <div class="card-info">
             <p class="card-label">Total Harvest</p>
             <h2 class="card-value" id="total-harvest">--</h2>
           </div>
         </div>
         <div class="card">
-          <div class="card-icon">📈</div>
+          <div class="card-icon">
+            <img
+              src="/static/images/profit.png"
+              style="width: 40px; height: 40px"
+            />
+          </div>
           <div class="card-info">
             <p class="card-label">Net Profit</p>
             <h2 class="card-value" id="net-profit">--</h2>
@@ -85,7 +135,7 @@
               <tr>
                 <th>Crop</th>
                 <th>Planted</th>
-                <th>Feild Size</th>
+                <th>Field Size</th>
                 <th>Harvest Date</th>
                 <th>Status</th>
               </tr>

@@ -43,7 +43,7 @@ async function loadDashboard() {
       return sum + (crop.harvest_quantity || 0);
     }, 0);
     document.getElementById("total-harvest").textContent =
-      totalHarvest > 0 ? `${totalHarvest.toFixed(1)} kg` : "0 kg;";
+      totalHarvest > 0 ? `${totalHarvest.toFixed(1)} kg` : "0 kg";
 
     // Populate crops table
     const tbody = document.getElementById("crops-table-body");
@@ -89,9 +89,29 @@ async function loadExpenses() {
 
     const total = expenses.reduce((sum, exp) => sum + exp.amount, 0);
     document.getElementById("total-expenses").textContent =
-      `TZ ${total.toLocaleString()}`;
+      `TZS ${total.toLocaleString()}`;
   } catch (err) {
     console.error("Expenses load failed:", err);
+  }
+}
+
+//Fetch Net Profit
+async function loadProfitReport() {
+  try {
+    const response = await fetch(`${API}/reports/profit`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!response.ok) return;
+
+    const data = await response.json();
+    const totalProfit = data.reduce((sum, row) => sum + row.profit, 0);
+    const profitEl = document.getElementById("net-profit");
+
+    profitEl.textContent = `TZS ${totalProfit.toLocaleString()}`;
+    profitEl.style.color = totalProfit >= 0 ? "#276749" : "#c53030";
+  } catch (err) {
+    console.error("Profit load failed:", err);
   }
 }
 
@@ -153,6 +173,20 @@ if (saveCropBtn) {
   });
 }
 
+async function loadFarmerName() {
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    const email = payload.sub;
+    const name = email.split("@")[0];
+    document.getElementById("farmer-name").textContent =
+      name.charAt(0).toUpperCase() + name.slice(1);
+  } catch (err) {
+    document.getElementById("farmer-name").textContent = "Farmer";
+  }
+}
+
 // Load everything
 loadDashboard();
 loadExpenses();
+loadProfitReport();
+loadFarmerName();

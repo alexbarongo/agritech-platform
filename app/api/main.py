@@ -1,14 +1,14 @@
 from contextlib import asynccontextmanager
-from http.client import responses
-
 from fastapi import FastAPI
-from fastapi.requests import Request
-from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
+from fastapi.responses import FileResponse
 from services.database import create_tables, migrate_crops_table, migrate_expenses_table
+from api.routes import auth, crops, expenses, reports
+import os
 
-from api.routes import auth, crops, expenses
+TEMPLATES_DIR = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "..", "templates"
+)
 
 
 @asynccontextmanager
@@ -27,28 +27,43 @@ app = FastAPI(
 )
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
 
 app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
 app.include_router(crops.router, prefix="/crops", tags=["Crops"])
 app.include_router(expenses.router, prefix="/expenses", tags=["Expenses"])
+app.include_router(reports.router, prefix="/reports", tags=["Reports"])
 
 
-@app.get("/", response_class=HTMLResponse)
-def landing(request: Request):
-    return templates.TemplateResponse(request=request, name="index.html")
+@app.get("/")
+def landing():
+    return FileResponse(os.path.join(TEMPLATES_DIR, "index.html"))
 
 
-@app.get("/login", response_class=HTMLResponse)
-def login_page(request: Request):
-    return templates.TemplateResponse(request=request, name="login.html")
+@app.get("/login")
+def login_page():
+    return FileResponse(os.path.join(TEMPLATES_DIR, "login.html"))
 
 
-@app.get("/dashboard", response_class=HTMLResponse)
-def dashboard_page(request: Request):
-    return templates.TemplateResponse(request=request, name="dashboard.html")
+@app.get("/register")
+def register_page():
+    return FileResponse(os.path.join(TEMPLATES_DIR, "register.html"))
 
 
-@app.get("/register", response_class=HTMLResponse)
-def register_page(request: Request):
-    return templates.TemplateResponse(request=request, name="register.html")
+@app.get("/dashboard")
+def dashboard_page():
+    return FileResponse(os.path.join(TEMPLATES_DIR, "dashboard.html"))
+
+
+@app.get("/crops-page")
+def crops_page():
+    return FileResponse(os.path.join(TEMPLATES_DIR, "crops.html"))
+
+
+@app.get("/expenses-page")
+def expenses_page():
+    return FileResponse(os.path.join(TEMPLATES_DIR, "expenses.html"))
+
+
+@app.get("/reports-page")
+def reports_page():
+    return FileResponse(os.path.join(TEMPLATES_DIR, "reports.html"))

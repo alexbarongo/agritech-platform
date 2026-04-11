@@ -43,9 +43,11 @@ def create_tables():
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS expenses (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
         item TEXT NOT NULL,
         amount REAL NOT NULL,
         crop_id INTEGER,
+        FOREIGN KEY (user_id) REFERENCES users(user_id),
         FOREIGN KEY (crop_id) REFERENCES crops(id)
     )
     """)
@@ -240,10 +242,14 @@ def get_expenses_with_crops_by_user(user_id: int):
 
     cursor.execute(
         """
-    SELECT expenses.id, crops.name, expenses.item, expenses.amount
+    SELECT 
+        expenses.id, 
+        COALESCE(crops.name, 'No Crop'),
+        expenses.item, 
+        expenses.amount
     FROM expenses
-    JOIN crops ON expenses.crop_id = crops.id
-    WHERE expenses.user_id = ?
+    LEFT JOIN crops ON expenses.crop_id = crops.id
+    WHERE crops.user_id = ?
     """,
         (user_id,),
     )
@@ -285,7 +291,7 @@ def get_total_expenses_per_crop_by_user(user_id: int):
         COUNT(expenses.id)
     FROM crops
     LEFT JOIN expenses ON expenses.crop_id = crops.id
-    WHERE user_id = ?
+    WHERE crops.user_id = ?
     GROUP BY crops.name
     ORDER BY COALESCE(SUM(expenses.amount), 0) DESC
     """
@@ -338,17 +344,11 @@ def migrate_expenses_table():
     conn = connect()
     cursor = conn.cursor()
 
-    new_columns = [
-        ("user_id", "INTEGER"),
-    ]
-
-    for column_name, column_type in new_columns:
-        try:
-            cursor.execute(
-                f"ALTER TABLE expenses ADD COLUMN {column_name} {column_type}"
-            )
-        except Exception as e:
-            print(f"Column {column_name} skipped: {e}")
+    try:
+        cursor.execute("ALTER TABLE expenses ADD COLUMN user_id INTEGER")
+        print("✅ user_id column added to expenses")
+    except Exception as e:
+        print(f"⚠️ Migration skipped (likely already exists): {e}")
 
     conn.commit()
     conn.close()
@@ -373,6 +373,35 @@ def get_profit_report():
         GROUP BY crops.id
         ORDER BY profit DESC
     """)
+
+    data = cursor.fetchall()
+    conn.close()
+    return data
+
+
+def get_profit_report_by_user(user_id: int):
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        SELECT
+            crops.id,
+            crops.name,
+            COALESCE(crops.harvest_quantity, 0),
+            COALESCE(crops.selling_price, 0),
+            COALESCE(SUM(expenses.amount), 0) as total_expenses,
+            COALESCE(crops.harvest_quantity, 0) * COALESCE(crops.selling_price, 0) as revenue,
+            (COALESCE(crops.harvest_quantity, 0) * COALESCE(crops.selling_price, 0)) -
+            COALESCE(SUM(expenses.amount), 0) as profit
+        FROM crops
+        LEFT JOIN expenses ON expenses.crop_id = crops.id
+        WHERE crops.user_id = ?
+        GROUP BY crops.id
+        ORDER BY profit DESC
+    """,
+        (user_id,),
+    )
 
     data = cursor.fetchall()
     conn.close()

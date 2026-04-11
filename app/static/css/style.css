@@ -23,19 +23,21 @@ button {
 .auth-page {
   display: flex;
   justify-content: center;
-  /*align-items: center;*/
+  align-items: center;
   min-height: 100vh;
   background: linear-gradient(135deg, #1a4731 0%, #2d7a4f 100%);
 }
 
 .auth-container {
   width: 100%;
-  max-height: 420px;
   padding: 20px;
   margin: 5% 0;
 }
 
 .auth-logo {
+  /*display: flex;
+  justify-content: center;
+  align-items: center;*/
   text-align: center;
   margin-bottom: 30px;
   color: white;
@@ -46,8 +48,8 @@ button {
   margin-bottom: 4px;
 }
 
-.auth--logo p {
-  font-size: 2.5rem;
+.auth-logo p {
+  font-size: 1.2rem;
   opacity: 0.85;
 }
 
@@ -56,7 +58,7 @@ button {
   border-radius: 16px;
   padding: 40px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  margin: 0 35% 0 35%;
+  margin: 0 10% 0 10%;
 }
 
 .auth-box h2 {
@@ -141,6 +143,7 @@ button {
   display: flex;
   min-height: 100vh;
   background: #f0f4f0;
+  overflow-x: hidden;
 }
 
 .sidebar {
@@ -173,12 +176,18 @@ button {
 }
 
 .nav-item {
-  display: block;
+  display: flex;
+  /*justify-content: center;*/
+  align-items: center;
   padding: 14px 24px;
   color: rgba(255, 255, 255, 0.75);
   text-decoration: none;
   font-size: 0.95rem;
   transition: all 0.2s;
+}
+
+.nav-item img {
+  margin-right: 10px;
 }
 
 .nav-item:hover,
@@ -213,10 +222,15 @@ button {
   margin-left: 240px;
   flex: 1;
   padding: 32px;
+  min-width: 0;
+  width: calc(100% -240px);
 }
 
 /* TOPBAR */
 .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
   margin-bottom: 32px;
 }
 
@@ -231,12 +245,31 @@ button {
   font-size: 0.95rem;
 }
 
+.topbar-greeting h1 {
+  display: flex;
+  /*justify-content: center;*/
+  align-items: center;
+  gap: 10px;
+}
+
 /* CARDS */
 .cards-grid {
   display: grid;
   grid-template-column: repeat(4, 1fr);
-  gap: 20px;
+  gap: 16px;
   margin-bottom: 32px;
+}
+
+@media (max-width: 1200px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .card {
@@ -245,9 +278,10 @@ button {
   padding: 24px;
   display: flex;
   align-iterms: center;
-  gap: 16px;
+  gap: 12px;
   box-shadow: 0 2px 8 px rgba(0, 0, 0, 0.6);
   transition: transform 0.2s;
+  min-width: 0;
 }
 
 .card:hover {
@@ -261,8 +295,8 @@ button {
   background: #f0f4f0;
   border-radius: 12px;
   display: flex;
-  align-iterms: center;
   justify-content: center;
+  align-items: center;
 }
 
 .card-label {
@@ -272,9 +306,12 @@ button {
 }
 
 .card-value {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   color: #1a4731;
   font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* SECTION */
@@ -387,7 +424,7 @@ button {
   padding: 32px;
   width: 100%;
   max-width: 480px;
-  max-height: 60%;
+  max-height: 70%;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   margin-bottom: 5%;
   margin-top: 10%;
@@ -425,4 +462,40 @@ button {
 .modal-actions .btn-primary {
   flex: 2;
   margin-top: 0;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn-action {
+    width: 100%;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: opacity 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin: 5px 0;
+}
+
+.btn-action:hover {
+    opacity: 0.8;
+}
+
+.btn-harvest {
+    background: #c6f6d5;
+    color: #276749;
+}
+
+.btn-delete {
+background: #fff5f5
+color: #c53030;
 }
