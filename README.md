@@ -1,10 +1,9 @@
-# AgriTech Platform (Tanzania)
+# AgriTech Vertical Integration Limited
 
-Building a software system to modernize agriculture in Tanzania.
-
-# 🌱 AgriTech Vertical Integration Limited
-
-![AgriTech Vertical Integration Logo](ATVI-brand.png)
+<img src="ATVI-brand.png" 
+     alt="AgriTech Vertical Integration Logo" 
+     width="360" 
+     style="display: block; margin: 0 auto;">
 
 **AgriTech Vertical Integration Limited** is a technology-driven agricultural enterprise focused on transforming modern farming through **end-to-end supply chain control, data systems, and sustainable production methods**.
 
