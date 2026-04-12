@@ -1,7 +1,7 @@
 # AgriTech Vertical Integration Limited
 
 <p align="center">
-  <img src="ATVI-brand.png" 
+  <img src="ATVI-logo.png" 
        alt="AgriTech Vertical Integration Logo" 
        width="120">
 </p>
