@@ -187,8 +187,13 @@ button {
 }
 
 .nav-item img {
-  margin-right: 10px;
+    margin-right: 10px;
 }
+
+/*.nav-item:hover img,
+.nav-item.active img {
+    background: #1a4731;
+}*/
 
 .nav-item:hover,
 .nav-item.active {

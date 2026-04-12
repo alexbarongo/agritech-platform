@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title></title>
+    <link href="/static/css/style.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="/static/images/ATVI-logo.png" />
+  </head>
+  <body class="dashboard-page">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <img
+          src="/static/images/ATVI-logo-wb.png"
+          class="img-logo"
+          alt="Agritech brand logo"
+          style="width: 40px; height: 40px; border-radius: 5px"
+        />
+        <h2>AgriTech</h2>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="/dashboard" class="nav-item">
+          <img
+            src="/static/images/dashboard.png"
+            style="width: 30px; height: 30px"
+          />
+          Dashboard
+        </a>
+        <a href="/crops-page" class="nav-item">
+          <img
+            src="/static/images/crops.png"
+            style="width: 30px; height: 30px"
+          />
+          My Crops
+        </a>
+        <a href="/expenses" class="nav-item active">
+          <img
+            src="/static/images/expenses.png"
+            style="width: 30px; height: 30px"
+          />
+          Expenses
+        </a>
+        <a href="/reports" class="nav-item">
+          <img
+            src="/static/images/report.png"
+            style="width: 30px; height: 30px"
+          />
+          Reports
+        </a>
+        <a href="/profile" class="nav-item">
+          <img
+            src="/static/images/profile.png"
+            style="width: 30px; height: 30px"
+          />
+          Profile
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <button id="logout-btn" class="btn-logout">Sign Out</button>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+      <div class="topbar">
+        <div class="topbar-greeting">
+          <h1>
+            <img
+              src="/static/images/expenses.png"
+              style="width: 40px; height: 40px"
+            />
+            My Expenses
+          </h1>
+          <p>Manage your crops and record expenses</p>
+        </div>
+        <button class="btn-add" id="add-crop-btn">+ Add Crop</button>
+      </div>
+    </div>
+  </body>
+</html>
