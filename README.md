@@ -1,9 +1,9 @@
 # AgriTech Vertical Integration Limited
 
-<img src="ATVI-brand.png" 
+<img src="ATVI-logo-wb.png" 
      alt="AgriTech Vertical Integration Logo" 
      width="160" 
-     style="display: block; margin: 0 auto;">
+     style="display: flex; justfy-content: center; border-radius: 20px; margin: 0 auto;">
 
 **AgriTech Vertical Integration Limited** is a technology-driven agricultural enterprise focused on transforming modern farming through **end-to-end supply chain control, data systems, and sustainable production methods**.
 
