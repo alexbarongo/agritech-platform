@@ -1,6 +1,7 @@
 import os
 import sqlite3
 
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_NAME = os.path.join(BASE_DIR, "..", "data", "farm.db")
 
@@ -206,6 +207,15 @@ def delete_crop(crop_id):
 
     # then delete crop
     cursor.execute("DELETE FROM crops WHERE id = ?", (crop_id,))
+
+    conn.commit()
+    conn.close()
+
+
+def delete_expense(expense_id: int):
+    conn = connect()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM expenses WHERE id = ?", (expense_id,))
 
     conn.commit()
     conn.close()

@@ -34,21 +34,21 @@
           />
           My Crops
         </a>
-        <a href="/expenses" class="nav-item active">
+        <a href="/expenses-page" class="nav-item active">
           <img
             src="/static/images/expenses.png"
             style="width: 30px; height: 30px"
           />
           Expenses
         </a>
-        <a href="/reports" class="nav-item">
+        <a href="/reports-page" class="nav-item">
           <img
             src="/static/images/report.png"
             style="width: 30px; height: 30px"
           />
           Reports
         </a>
-        <a href="/profile" class="nav-item">
+        <a href="/profile-page" class="nav-item">
           <img
             src="/static/images/profile.png"
             style="width: 30px; height: 30px"
@@ -74,8 +74,86 @@
           </h1>
           <p>Manage your crops and record expenses</p>
         </div>
-        <button class="btn-add" id="add-crop-btn">+ Add Crop</button>
+        <button class="btn-add" id="add-expense-btn">+ Add Expense</button>
+      </div>
+
+      <div class="section">
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Crop</th>
+                <th>Expense Item</th>
+                <th>Amount</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="expense-tbody">
+              <tr>
+                <td colspan="9" class="loading">Loading...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ADD EXPENSE MODAL -->
+      <div class="modal hidden" id="add-expense-modal">
+        <div class="modal-box">
+          <h2>Add New Expense</h2>
+          <div class="form-group">
+            <select id="expense-crop-id" class="dropdown">
+              <option value="">Select a crop...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Expense Item *</label>
+            <input
+              type="text"
+              id="expense-item"
+              placeholder="e.g. Fertilizer, Labour, Irrigation"
+            />
+          </div>
+          <div class="form-group">
+            <label>Amount (TZS) *</label>
+            <input type="number" id="expense-amount" placeholder="e.g. 10000" />
+          </div>
+          <div class="error-message hidden" id="expense-modal-error"></div>
+          <div class="modal-actions">
+            <button id="cancel-expense-btn" class="btn-secondary">
+              Cancel
+            </button>
+            <button id="save-expense-btn" class="btn-primary">
+              Save Expense
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- DELETE EXPENSE MODAL -->
+      <div id="delete-expense-modal" class="modal hidden">
+        <div class="modal-box-sm">
+          <h2>Delete Expense</h2>
+          <p style="color: #718096; margin-bottom: 24px">
+            Are you sure you want to delete this expense? This cannot be undone.
+          </p>
+          <input type="hidden" id="delete-expense-id" />
+          <div class="modal-actions">
+            <button id="cancel-delete-expense-btn" class="btn-secondary">
+              Cancel
+            </button>
+            <button
+              id="confirm-delete-expense-btn"
+              class="btn-primary"
+              style="background: #c53030"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
       </div>
     </div>
+
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/expenses.js"></script>
   </body>
 </html>

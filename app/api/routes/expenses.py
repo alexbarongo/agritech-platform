@@ -1,6 +1,10 @@
 from fastapi import APIRouter, Depends
 from services.auth import get_current_user
-from services.database import add_expense, get_expenses_with_crops_by_user
+from services.database import (
+    add_expense,
+    get_expenses_with_crops_by_user,
+    delete_expense,
+)
 
 router = APIRouter()
 
@@ -25,3 +29,12 @@ def create_expense(
     user_id = current_user["user_id"]
     add_expense(user_id, item, amount, crop_id)
     return {"message": "Expense recorded", "item": item, "amount": amount}
+
+
+@router.delete("/{expense_id}")
+def create_expense_endpoint(
+    expense_id: int, current_user: dict = Depends(get_current_user)
+):
+
+    delete_expense(expense_id)
+    return {"message": "Expense deleted"}

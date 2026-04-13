@@ -3,12 +3,12 @@ from services.database import (
     add_expense,
     clear_table,
     delete_crop,
-    delete_expenses_by_crop,
     get_crops,
     get_expenses_with_crops,
     get_profit_report,
     get_total_expenses_per_crop,
     record_harvest,
+    delete_expense,
 )
 
 
@@ -143,7 +143,7 @@ def remove_expense():
         print("No crop found with that ID.")
         return
 
-    delete_expenses_by_crop(int(expense_id))
+    delete_expense(int(expense_id))
     print("Expenses Deleted.")
 
 

@@ -17,7 +17,7 @@ async function loadCrops() {
     });
 
     if (response.status === 401) {
-      cleanToken();
+      clearToken();
       window.location.href = "/login";
       return;
     }
