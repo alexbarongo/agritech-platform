@@ -93,8 +93,11 @@ document
     // console.log("item:", item);
     // console.log("amount:", amount);
 
+    // Ensuring errorDiv alert is hidden when addEventListeneris called again
+    errorDiv.classList.add("hidden");
+
     if (!crop_id || !item || !amount) {
-      errorDiv.textContent = "All fields are requuired.";
+      errorDiv.textContent = "All fields are required.";
       errorDiv.classList.remove("hidden");
       return;
     }
