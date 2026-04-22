@@ -1,8 +1,8 @@
 # AgriTech Vertical Integration Limited
 
 <p align="center">
-  <img src="ATVI-logo.png" 
-       alt="AgriTech Vertical Integration Logo" 
+  <img src="ATVI-logo.png"
+       alt="AgriTech Vertical Integration Logo"
        width="120">
 </p>
 
@@ -14,7 +14,7 @@ The company operates on a **vertical integration model**, meaning it manages mul
 
 To build a fully integrated, technology-powered agricultural ecosystem that maximizes productivity, sustainability, and profitability from farm to market.
 
-**One-line definition:**  
+**One-line definition:**
 **AgriTech Vertical Integration Limited is a data-driven agricultural company that controls the full farming value chain using technology to optimize production, reduce costs, and maximize profits.**
 
 ---
