@@ -1,6 +1,6 @@
 import os
 import sqlite3
-
+from fileinput import close
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_NAME = os.path.join(BASE_DIR, "..", "data", "farm.db")
@@ -252,10 +252,10 @@ def get_expenses_with_crops_by_user(user_id: int):
 
     cursor.execute(
         """
-    SELECT 
-        expenses.id, 
+    SELECT
+        expenses.id,
         COALESCE(crops.name, 'No Crop'),
-        expenses.item, 
+        expenses.item,
         expenses.amount
     FROM expenses
     LEFT JOIN crops ON expenses.crop_id = crops.id
@@ -433,5 +433,34 @@ def record_harvest(crop_id, harvest_quantity, harvest_date, selling_price):
         (harvest_quantity, harvest_date, selling_price, crop_id),
     )
 
+    conn.commit()
+    conn.close()
+
+
+def get_user_by_id(user_id: int):
+    conn = connect()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT id, name, email, created_at FROM users WHERE id = ?", (user_id,)
+    )
+    user = cursor.fetchone()
+    conn.close()
+    return user
+
+
+def update_user_name(user_id: int, name: str):
+    conn = connect()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE users SET name = ? WHERE id = ?", (name, user_id))
+    conn.commit()
+    conn.close()
+
+
+def update_user_password(user_id: int, hashed_password: str):
+    conn = connect()
+    cursor = conn.cursor()
+    cursor.execute(
+        "UPDATE users SET password = ? WHERE id = ?", (hashed_password, user_id)
+    )
     conn.commit()
     conn.close()
