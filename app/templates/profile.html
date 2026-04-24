@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgriTech - Dashboard</title>
+    <link href="/static/css/style.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="/static/images/ATVI-logo.png" />
+  </head>
+
+  <body class="dashboard-page">
+    <!-- SIDEBAR -->
+
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <img
+          src="/static/images/ATVI-logo-wb.png"
+          class="img-logo"
+          alt="Agritech brand logo"
+          style="width: 40px; height: 40px; border-radius: 5px"
+        />
+        <h2>AgriTech</h2>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="/dashboard" class="nav-item active">
+          <img
+            src="/static/images/dashboard.png"
+            style="width: 30px; height: 30px"
+          />
+          Dashboard
+        </a>
+        <a href="/crops-page" class="nav-item">
+          <img
+            src="/static/images/crops.png"
+            style="width: 30px; height: 30px"
+          />
+          My Crops
+        </a>
+        <a href="/expenses-page" class="nav-item">
+          <img
+            src="/static/images/expenses.png"
+            style="width: 30px; height: 30px"
+          />
+          Expenses
+        </a>
+        <a href="/reports-page" class="nav-item">
+          <img
+            src="/static/images/report.png"
+            style="width: 30px; height: 30px"
+          />
+          Reports
+        </a>
+        <a href="/profile-page" class="nav-item">
+          <img
+            src="/static/images/profile.png"
+            style="width: 30px; height: 30px"
+          />
+          Profile
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <button id="logout-btn" class="btn-logout">Sign Out</button>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+      <div class="topbar">
+        <div class="topbar-greeting">
+          <h1>
+            <img src="/static/images/profile.png"
+                 style="width: 40px; height: 40px;" />
+            My Profile
+          </h1>
+          <p>Manage your account details</p>
+        </div>
+      </div>
+
+      <!-- PROFILE CARD -->
+      <div class="profile-grid">
+
+        <!-- ACCOUNT INFO -->
+        <div class="section">
+          <h2 class="section-title">Account Information</h2>
+
+          <div class="profile-avatar">
+            <div class="avatar-circle">
+              <span id="avatar-initials">--</span>
+            </div>
+            <div class="profile-meta">
+              <h3 id="profile-name">Loading...</h3>
+              <p id="profile-email">Loading...</p>
+              <p class="profile-since">
+                Member since <span id="profile-since">--</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- UPDATE NAME -->
+        <div class="section">
+          <h2 class="section-title">Update Name</h2>
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="new-name" placeholder="Enter your name" />
+          </div>
+          <div class="success-message hidden" id="name-success">
+            Name update successfully.
+          </div>
+          <div class="error-message hidden" id="name-error"></div>
+          <button id="update-name-btn" class="btn-primary"
+                  style="margin-top: 8px;">
+          Update Name
+          </button>
+        </div>
+
+        <!-- CHANGE PASSWORD -->
+        <div class="section">
+          <h2 class="section-title">Change Password</h2>
+          <div class="form-group">
+            <label>Current Password</label>
+            <input type="password" id="currrent-password" placeholder="Enter Current Password">
+          </div>
+          <div class="form-group">
+            <label>New Password</label>
+            <input type="password" id="new-password" placeholder="Enter New Password">
+          </div>
+          <div class="form-group">
+            <label>Confirm New Password</label>
+            <input type="password" id="confirm-password" placeholder="Confirm New Password">
+            <div id="password-success" class="success-message hidden">
+              Password updated successfully.
+            </div>
+            <div class="error-message hidden" id="password-error"></div>
+            <button id="update-password-bt" class="btn-primary
+              "     style="margin-top: 8px;">
+            Change Password
+            </button>
+            </div>
+
+         </div>
+      </div>
+    </div>
+
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/profile.js"></script>
+  </body>
+</html>
