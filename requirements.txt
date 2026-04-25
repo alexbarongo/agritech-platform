@@ -1,0 +1,17 @@
+attrs==26.1.0
+cffi==2.0.0
+cryptography==46.0.7
+cupshelpers==1.0
+dbus-python==1.4.0
+filelock==3.29.0
+gps==3.27.5
+lit==22.1.3.dev0
+nftables==0.1
+packaging==26.1
+pillow==12.2.0
+pycairo==1.29.0
+pycparser==3.0
+pycups==2.0.4
+PyGObject==3.56.2
+python-uinput==1.0.1
+wheel==0.47.0

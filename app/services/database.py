@@ -3,7 +3,9 @@ import sqlite3
 from fileinput import close
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_NAME = os.path.join(BASE_DIR, "..", "data", "farm.db")
+DATA_DIR = os.environ.get("DATA_DIR", os.path.join(BASE_DIR, "..", "data"))
+DB_NAME = os.path.join(DATA_DIR, "farm.db")
+os.makedirs(DATA_DIR, exist_ok=True)
 
 
 def connect():
