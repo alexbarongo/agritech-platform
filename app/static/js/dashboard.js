@@ -114,6 +114,21 @@ async function loadProfitReport() {
     console.error("Profit load failed:", err);
   }
 }
+//Fetch Farmer's Name
+async function loadFarmerName() {
+  try {
+    const response = await fetch(`${API}/profile/`, {
+      headers: { Authorization: `Bearer ${token}`}
+    });
+    if (response.ok) {
+      const user = await response.json();
+      const firstName = user.name.split(" ")[0];
+      document.getElementById("farmer-name").textContent = firstName;
+    }
+  } catch (err) {
+    console.error("Failed to load farmer name:", err);
+  }
+}
 
 // Load everything
 loadDashboard();

@@ -526,3 +526,65 @@ color: #c53030;
     border-radius: 8px;
     font-size: 0.85rem;
 }
+
+/* PROFILE */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  color:  #1a4731;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #f0f4f0;
+}
+
+.profile-avatar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+
+.avatar-cicle {
+  width: 72px;
+  height: 72px;
+  background: #2d7a4f;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  color: white;
+  font-size: 1.6rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.profile-meta h3 {
+  font-size: 1.2rem;
+  color: #1a4731;
+  margin-bottom: 4px;
+}
+
+.profile-meta p {
+  color: #718096;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+
+.profile-since {
+  font-size: 0.8rem;
+  color: #a0aec0;
+}
+
+.success-message {
+  background: #f0fff4;
+  border: 1px solid #9ae6b4;
+  color: #276749;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
