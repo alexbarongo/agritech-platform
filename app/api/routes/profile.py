@@ -38,19 +38,19 @@ def update_name(
 def update_password(
     request: UpdatePasswordRequest, current_user: dict = Depends(get_current_user)
 ):
-    from services.database import get_user_by_id
-
     user_id = current_user["user_id"]
     user = get_user_by_id(user_id)
 
+    # Try bcrypt verification first
+    password_valid = False
     try:
-        if not verify_password(request.current_password, user[3]):
-            raise HTTPException(status_code=400, detail="Current password is incorrect")
+        password_valid = verify_password(request.current_password, user[3])
     except Exception:
-        raise HTTPException(
-            status_code=400,
-            detail="Cannot verify current password. Please register a new account.",
-        )
+        # Fallback for accounts with non-bcrypt passwords
+        password_valid = request.current_password == user[3]
+
+    if not password_valid:
+        raise HTTPException(status_code=400, detail="Current password is incorrect")
 
     hashed = hash_password(request.new_password)
     update_user_password(user_id, hashed)
