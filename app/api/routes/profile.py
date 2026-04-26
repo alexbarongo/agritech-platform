@@ -19,8 +19,10 @@ class UpdatePasswordRequest(BaseModel):
 def get_profile(current_user: dict = Depends(get_current_user)):
     user_id = current_user["user_id"]
     user = get_user_by_id(user_id)
+
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
+
     return {"id": user[0], "name": user[1], "email": user[2], "created_at": user[3]}
 
 
@@ -29,8 +31,11 @@ def update_name(
     request: UpdateNameRequest, current_user: dict = Depends(get_current_user)
 ):
     user_id = current_user["user_id"]
-    print(f"Updating name for user_id: {user_id} to: {request.name}")
-    update_user_name(user_id, request.name)
+
+    if not request.name.strip():
+        raise HTTPException(status_code=400, detail="Name cannot be empty")
+
+    update_user_name(user_id, request.name.strip())
     return {"message": "Name updated successfully"}
 
 
@@ -41,13 +46,15 @@ def update_password(
     user_id = current_user["user_id"]
     user = get_user_by_id(user_id)
 
-    # Try bcrypt verification first
-    password_valid = False
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    stored_password = user[4]
+
     try:
-        password_valid = verify_password(request.current_password, user[4])
+        password_valid = verify_password(request.current_password, stored_password)
     except Exception:
-        # Fallback for accounts with non-bcrypt passwords
-        password_valid = request.current_password == user[4]
+        password_valid = request.current_password == stored_password
 
     if not password_valid:
         raise HTTPException(status_code=400, detail="Current password is incorrect")
