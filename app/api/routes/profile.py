@@ -44,10 +44,10 @@ def update_password(
     # Try bcrypt verification first
     password_valid = False
     try:
-        password_valid = verify_password(request.current_password, user[3])
+        password_valid = verify_password(request.current_password, user[4])
     except Exception:
         # Fallback for accounts with non-bcrypt passwords
-        password_valid = request.current_password == user[3]
+        password_valid = request.current_password == user[4]
 
     if not password_valid:
         raise HTTPException(status_code=400, detail="Current password is incorrect")

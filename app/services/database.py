@@ -443,7 +443,8 @@ def get_user_by_id(user_id: int):
     conn = connect()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT id, name, email, created_at FROM users WHERE id = ?", (user_id,)
+        "SELECT id, name, email, created_at, password FROM users WHERE id = ?",
+        (user_id,),
     )
     user = cursor.fetchone()
     conn.close()
