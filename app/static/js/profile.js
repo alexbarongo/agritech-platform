@@ -76,7 +76,7 @@ document.getElementById("update-name-btn").addEventListener("click", async () =>
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({name})
+      body: JSON.stringify({ name })
     });
 
     if (response.ok) {
@@ -84,7 +84,7 @@ document.getElementById("update-name-btn").addEventListener("click", async () =>
       loadProfile();
     } else {
       const data = await response.json();
-      errorDiv.textContent = data.detail || "Failed to pdate name.";
+      errorDiv.textContent = data.detail || "Failed to update name.";
       errorDiv.classList.remove("hidden");
     }
   } catch (err) {
@@ -111,7 +111,14 @@ document.getElementById("update-password-btn").addEventListener("click", async (
     return;
   }
 
-  if (!new_password !== confirm_password) {
+  if (new_password !== confirm_password) {
+        errorDiv.textContent = "New passwords do not match.";
+        errorDiv.classList.remove("hidden");
+        return;
+    }
+
+
+  if (new_password.length < 6) {
     errorDiv.textContent = "New password be at least 6 charachers.";
     errorDiv.classList.remove("hidden");
     return;

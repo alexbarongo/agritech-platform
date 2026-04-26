@@ -29,7 +29,8 @@ def update_name(
     request: UpdateNameRequest, current_user: dict = Depends(get_current_user)
 ):
     user_id = current_user["user_id"]
-    update_user_name = (user_id, request.name)
+    print(f"Updating name for user_id: {user_id} to: {request.name}")
+    update_user_name(user_id, request.name)
     return {"message": "Name updated successfully"}
 
 
@@ -42,8 +43,14 @@ def update_password(
     user_id = current_user["user_id"]
     user = get_user_by_id(user_id)
 
-    if not verify_password(request.current_password, user[3]):
-        raise HTTPException(status_code=400, detail="Current password is incorrect")
+    try:
+        if not verify_password(request.current_password, user[3]):
+            raise HTTPException(status_code=400, detail="Current password is incorrect")
+    except Exception:
+        raise HTTPException(
+            status_code=400,
+            detail="Cannot verify current password. Please register a new account.",
+        )
 
     hashed = hash_password(request.new_password)
     update_user_password(user_id, hashed)
