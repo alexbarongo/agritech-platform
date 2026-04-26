@@ -1,7 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
 from services.auth import get_current_user
-from services.database import (add_crop, delete_crop, get_crops_by_user,
-                               record_harvest, record_price_history)
+from services.database import (
+    add_crop,
+    delete_crop,
+    get_crops_by_user,
+    record_harvest,
+    record_price_history,
+)
 
 router = APIRouter()
 
@@ -56,8 +61,8 @@ def record_harvest_endpoint(
     if crop_id not in crop_ids:
         raise HTTPException(status_code=403, detail="Not your crop")
 
-    #Get crop name for price history
-    crop = next((c for c un user_crops if c[0] == crop_id), None)
+    # Get crop name for price history
+    crop = next((c for c in user_crops if c[0] == crop_id), None)
     crop_name = crop[1] if crop else "unknown"
 
     record_harvest(crop_id, harvest_quantity, harvest_date, selling_price)
