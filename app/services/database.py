@@ -55,6 +55,16 @@ def create_tables():
     )
     """)
 
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS price_history (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            crop_name TEXT NOT NULL,
+            average_price REAL NOT NULL,
+            region TEXT,
+            record_date TEXT DEFAULT (date('now'))
+        )
+    """)
+
     conn.commit()
     conn.close()
 
@@ -102,6 +112,7 @@ def add_crop(
     harvest_date=None,
     harvest_quantity=None,
     selling_price=None,
+    region=None,
 ):
     conn = connect()
     cursor = conn.cursor()
@@ -110,8 +121,8 @@ def add_crop(
         """
         INSERT INTO crops (
             user_id, name, planting_date,field_size, planted_quantity,
-            harvest_date, harvest_quantity, selling_price
-    ) VALUES (?,?,?,?,?,?,?, ?)
+            harvest_date, harvest_quantity, selling_price, region
+    ) VALUES (?,?,?,?,?,?,?, ?, ?)
     """,
         (
             user_id,
@@ -122,6 +133,7 @@ def add_crop(
             harvest_date,
             harvest_quantity,
             selling_price,
+            region,
         ),
     )
 
@@ -339,6 +351,7 @@ def migrate_crops_table():
         ("harvest_date", "TEXT"),
         ("harvest_quantity", "REAL"),
         ("selling_price", "REAL"),
+        ("region", "TEXT"),
     ]
 
     for column_name, column_type in new_columns:
@@ -464,6 +477,20 @@ def update_user_password(user_id: int, hashed_password: str):
     cursor = conn.cursor()
     cursor.execute(
         "UPDATE users SET password = ? WHERE id = ?", (hashed_password, user_id)
+    )
+    conn.commit()
+    conn.close()
+
+
+def record_price_history(crop_name: str, price: float, region: str = None):
+    conn = connect()
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        INSERT INTO price_history (crop_name, average_price, region)
+        VALUES (?, ?, ?)
+    """,
+        (crop_name, price, region),
     )
     conn.commit()
     conn.close()

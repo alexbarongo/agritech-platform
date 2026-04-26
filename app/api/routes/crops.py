@@ -1,11 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from services.auth import get_current_user
-from services.database import (
-    add_crop,
-    delete_crop,
-    record_harvest,
-    get_crops_by_user,
-)
+from services.database import (add_crop, delete_crop, get_crops_by_user,
+                               record_harvest, record_price_history)
 
 router = APIRouter()
 
@@ -35,10 +31,11 @@ def create_crop(
     planting_date: str = None,
     field_size: float = None,
     planted_quantity: int = None,
+    region: str = None,
     current_user: dict = Depends(get_current_user),
 ):
     user_id = current_user["user_id"]
-    add_crop(user_id, name, planting_date, field_size, planted_quantity)
+    add_crop(user_id, name, planting_date, field_size, planted_quantity, region=region)
     return {"message": "Crop added", "name": name}
 
 
@@ -59,7 +56,13 @@ def record_harvest_endpoint(
     if crop_id not in crop_ids:
         raise HTTPException(status_code=403, detail="Not your crop")
 
+    #Get crop name for price history
+    crop = next((c for c un user_crops if c[0] == crop_id), None)
+    crop_name = crop[1] if crop else "unknown"
+
     record_harvest(crop_id, harvest_quantity, harvest_date, selling_price)
+    record_price_history(crop_name, selling_price)
+
     return {"message": "Harvest recorded"}
 
 
