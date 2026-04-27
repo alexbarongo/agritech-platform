@@ -1,155 +1,127 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AgriTech - Dashboard</title>
-    <link href="/static/css/style.css" rel="stylesheet" />
-    <link rel="icon" type="image/png" href="/static/images/ATVI-logo.png" />
-  </head>
-  <body class="dashboard-page">
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-      <div class="sidebar-logo">
-        <img
-          src="/static/images/ATVI-logo-wb.png"
-          class="img-logo"
-          alt="Agritech brand logo"
-          style="width: 40px; height: 40px; border-radius: 5px"
-        />
-        <h2>AgriTech</h2>
-      </div>
-      <nav class="sidebar-nav">
-        <a href="/dashboard" class="nav-item active">
-          <img
-            src="/static/images/dashboard.png"
-            style="width: 30px; height: 30px"
-          />
-          Dashboard
-        </a>
-        <a href="/crops-page" class="nav-item">
-          <img
-            src="/static/images/crops.png"
-            style="width: 30px; height: 30px"
-          />
-          My Crops
-        </a>
-        <a href="/expenses-page" class="nav-item">
-          <img
-            src="/static/images/expenses.png"
-            style="width: 30px; height: 30px"
-          />
-          Expenses
-        </a>
-        <a href="/reports-page" class="nav-item">
-          <img
-            src="/static/images/report.png"
-            style="width: 30px; height: 30px"
-          />
-          Reports
-        </a>
-        <a href="/profile-page" class="nav-item">
-          <img
-            src="/static/images/profile.png"
-            style="width: 30px; height: 30px"
-          />
-          Profile
-        </a>
-      </nav>
-      <div class="sidebar-footer">
-        <button id="logout-btn" class="btn-logout">Sign Out</button>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgriTech - Dashboard</title>
+  <link href="/static/css/style.css" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="/static/images/ATVI-logo.png" />
+</head>
+
+<body class="dashboard-page">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <img src="/static/images/ATVI-logo-wb.png" class="img-logo" alt="Agritech brand logo"
+        style="width: 40px; height: 40px; border-radius: 5px" />
+      <h2>AgriTech</h2>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="/dashboard" class="nav-item active">
+        <img src="/static/images/dashboard.png" style="width: 30px; height: 30px" />
+        Dashboard
+      </a>
+      <a href="/crops-page" class="nav-item">
+        <img src="/static/images/crops.png" style="width: 30px; height: 30px" />
+        My Crops
+      </a>
+      <a href="/expenses-page" class="nav-item">
+        <img src="/static/images/expenses.png" style="width: 30px; height: 30px" />
+        Expenses
+      </a>
+      <a href="/reports-page" class="nav-item">
+        <img src="/static/images/report.png" style="width: 30px; height: 30px" />
+        Reports
+      </a>
+      <a href="/profile-page" class="nav-item">
+        <img src="/static/images/profile.png" style="width: 30px; height: 30px" />
+        Profile
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <button id="logout-btn" class="btn-logout">Sign Out</button>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <div class="topbar-greeting">
+        <h1>Good Morning, <span id="farmer-name">Farmer</span>👋</h1>
+        <p id="current-date"></p>
       </div>
     </div>
 
-    <!-- MAIN CONTENT -->
-    <div class="main-content">
-      <!-- TOP BAR -->
-      <div class="topbar">
-        <div class="topbar-greeting">
-          <h1>Good Morning, <span id="farmer-name">Farmer</span>👋</h1>
-          <p id="current-date"></p>
+    <!-- SUMMARY CARDS -->
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">
+          <img src="/static/images/crops.png" style="width: 40px; height: 40px" />
+        </div>
+        <div class="card-info">
+          <p class="card-label">Total Crops</p>
+          <h2 class="card-value" id="total-crops">--</h2>
         </div>
       </div>
-
-      <!-- SUMMARY CARDS -->
-      <div class="cards-grid">
-        <div class="card">
-          <div class="card-icon">
-            <img
-              src="/static/images/crops.png"
-              style="width: 40px; height: 40px"
-            />
-          </div>
-          <div class="card-info">
-            <p class="card-label">Total Crops</p>
-            <h2 class="card-value" id="total-crops">--</h2>
-          </div>
+      <div class="card">
+        <div class="card-icon">
+          <img src="/static/images/expenses.png" style="width: 40px; height: 40px" />
         </div>
-        <div class="card">
-          <div class="card-icon">
-            <img
-              src="/static/images/expenses.png"
-              style="width: 40px; height: 40px"
-            />
-          </div>
-          <div class="card-info">
-            <p class="card-label">Total Expenses</p>
-            <h2 class="card-value" id="total-expenses">--</h2>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-icon">
-            <img
-              src="/static/images/harvest.png"
-              style="width: 40px; height: 40px"
-            />
-          </div>
-          <div class="card-info">
-            <p class="card-label">Total Harvest</p>
-            <h2 class="card-value" id="total-harvest">--</h2>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-icon">
-            <img
-              src="/static/images/profit.png"
-              style="width: 40px; height: 40px"
-            />
-          </div>
-          <div class="card-info">
-            <p class="card-label">Net Profit</p>
-            <h2 class="card-value" id="net-profit">--</h2>
-          </div>
+        <div class="card-info">
+          <p class="card-label">Total Expenses</p>
+          <h2 class="card-value" id="total-expenses">--</h2>
         </div>
       </div>
-
-      <!-- CROPS TABLE -->
-      <div class="section">
-        <div class="section-header">
-          <h2>My Crops</h2>
+      <div class="card">
+        <div class="card-icon">
+          <img src="/static/images/harvest.png" style="width: 40px; height: 40px" />
         </div>
-        <div class="table-container">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Crop</th>
-                <th>Planted</th>
-                <th>Field Size</th>
-                <th>Harvest Date</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="crops-table-body">
-              <tr>
-                <td colspan="5" class="loading">Loading...</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="card-info">
+          <p class="card-label">Total Harvest</p>
+          <h2 class="card-value" id="total-harvest">--</h2>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">
+          <img src="/static/images/profit.png" style="width: 40px; height: 40px" />
+        </div>
+        <div class="card-info">
+          <p class="card-label">Net Profit</p>
+          <h2 class="card-value" id="net-profit">--</h2>
         </div>
       </div>
     </div>
 
-    <script src="/static/js/main.js"></script>
-    <script src="/static/js/dashboard.js"></script>
-  </body>
+    <!-- CROPS TABLE -->
+    <div class="section">
+      <div class="section-header">
+        <h2>My Crops</h2>
+      </div>
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Crop</th>
+              <th>Planted</th>
+              <th>Field Size</th>
+              <th>Harvest Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="crops-table-body">
+            <tr>
+              <td colspan="5" class="loading">Loading...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/main.js"></script>
+  <script src="/static/js/dashboard.js"></script>
+</body>
+
 </html>

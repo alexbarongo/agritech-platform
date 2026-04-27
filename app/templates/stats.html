@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgriTech - Agricultural Intalligency</title>
+  <link href="/static/css/style.css" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="/static/images/ATVI-logo.png" />
+  < <script scr="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js">
+    </script>
+</head>
+
+<body class="stats-page">
+  <!-- HEADER-->
+  <div class="stats-header">
+    <div class="stats-header-left">
+      <img src="/static/images/ATVI-logo-wb.png" style="width: 40px; height: 40px; border-radius: 5px" />
+      <h1>AgriTech Tanzania</h1>
+    </div>
+    <div class="stats-header-right">
+      <a href="/login" class="btn-primary" style="text-decoration: none; padding: 10px 20px">
+        Sign In
+      </a>
+      <a href="/register" class="btn-secondary-outline" style="text-decoration: none; padding: 10px 20px">
+        Register
+      </a>
+    </div>
+  </div>
+
+  <!-- HERO-->
+  <div class="stats-hero">
+    <h2>Tanzania's Agricultural Intalligency Platform</h2>
+    <p>
+      Real-time data from farmers across Tanzania. Track crop prices, harvest
+      volumes, and market trends
+    </p>
+  </div>
+
+  <!-- SUMMARY CARDS -->
+  <div class="stats-container">
+    <div class="stats-cards">
+      <div class="stat-card">
+        <div class="stat-icon">👨‍🌾</div>
+        <div class="stat-info">
+          <p class="stsat-label">Registered Farmers</p>
+          <h2 class="stat-value" id="total-farmers">--</h2>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🌾</div>
+        <div class="stat-info">
+          <p class="stsat-label">Active Crops</p>
+          <h2 class="stat-value" id="active-crops">--</h2>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📦</div>
+        <div class="stat-info">
+          <p class="stsat-label">Total Harvest</p>
+          <h2 class="stat-value" id="total-harvest">--</h2>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🌍</div>
+        <div class="stat-info">
+          <p class="stsat-label">Total Crops Recorded</p>
+          <h2 class="stat-value" id="total-crops">--</h2>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOP CROPS AND PRICE TREND-->
+    <div class="stats-grid-2">
+      <!-- Top 3 Crops-->
+      <div class="stats-section">
+        <h3>Top Crops by Price</h3>
+        <div id="top-crop-list">
+          <p class="loading">Loading...</p>
+        </div>
+      </div>
+
+      <!-- Price Trend Chart-->
+      <div class="stats-section">
+        <h3>Price Trends</h3>
+        <canvas id="price-chart" height="200"></canvas>
+      </div>
+    </div>
+
+    <!--REGIONS-->
+    <div class="stats-section">
+      <h3>Crop Activity by Region</h3>
+      <div class="regions-grid" id="region-list">
+        <p class="loading">Loading...</p>
+      </div>
+    </div>
+
+    <!-- NEWS-->
+    <div class="stats-section">
+      <h3>Agricultural News & Updates</h3>
+      <div id="news-list">
+        <p class="loading">Loading...</p>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="stats-cta">
+      <h3>Ready to manage your farm smarter?</h3>
+      <p>
+        Join thousands of Tanzanian farmers using AgriTech to track crops,
+        expenses, maximize profit, and gain value addition to their crops and
+        capital.
+      </p>
+      <a href="/register" class="btn-primary" style="text-decoration: none; padding: 14px 32px; font-size: 1.1rem">
+        Get Started Free
+      </a>
+    </div>
+  </div>
+
+  <script src="/static/js/stats.js"></script>
+</body>
+
+</html>

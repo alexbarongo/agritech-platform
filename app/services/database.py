@@ -1,3 +1,4 @@
+import datetime
 import os
 import sqlite3
 from fileinput import close
@@ -62,6 +63,16 @@ def create_tables():
             average_price REAL NOT NULL,
             region TEXT,
             record_date TEXT DEFAULT (date('now'))
+        )
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS news (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            content TEXT NOT NULL,
+            author TEXT DEFAULT 'AgriTech Team',
+            created_at TEXT DEFAULT (datetime('now'))
         )
     """)
 
@@ -494,3 +505,132 @@ def record_price_history(crop_name: str, price: float, region: str = None):
     )
     conn.commit()
     conn.close()
+
+
+def add_news(title: str, content: str, author: str = "AgriTech Team"):
+    conn = connect()
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        INSERT INTO news (title, content, author)
+        VALUES (?, ?, ?)
+    """,
+        (title, content, author),
+    )
+    conn.commit()
+    conn.close()
+
+
+def get_news(limit: int = 5):
+    conn = connect()
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        SELECT id, title, content, author, created_at
+        FROM news
+        ORDER BY created_at DESC
+        LIMIT ?
+    """,
+        (limit,),
+    )
+    data = cursor.fetchall()
+    conn.close()
+    return data
+
+
+def delete_news(news_id: int):
+    conn = connect()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM news WHERE id = ?", (news_id,))
+    conn.commit()
+    conn.close()
+
+
+def get_public_stats():
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT  COUNT(DISTINCT id) FROM crops
+        WHERE harvest_date IS NULL
+    """)
+    active_crops = cursor.fetchone()[0]
+
+    cursor.execute("""
+        SELECT COALESCE(SUM(harvest_quantity), 0) FROM crops
+        WHERE harvest_quantity IS NOT NULL
+    """)
+    total_harvest = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(DISTINCT id) FROM users")
+    total_farmers = cursor.fetch0ne()[0]
+
+    cursor.execute("""
+        SELECT COUNT(DINSTICT id) FROM crops
+    """)
+    total_crops = cursor.fetchone()[0]
+
+    conn.close()
+    return {
+        "activate_crops": active_crops,
+        "total_harvest": total_harvest,
+        "total_farmers": total_farmers,
+        "total_crops": total_crops,
+    }
+
+
+def get_top_crops_by_price():
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            name,
+            ROUND(AVG(selling_price), 0) as avg_price,
+            COUNT(id) as count,
+            COALESCE(SUM(harvest_quantity), 0) as total_harvest
+        FROM crops
+        WHERE selling_price IS NOT NULL
+        GROUP BY name
+        ORDER BY avg_price DESC
+        LIMIT 3
+    """)
+    data = cursor.fetchall()
+    conn.close()
+    return data
+
+
+def get_crops_by_region():
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            region,
+            COUNT(id) as crop_count,
+            COALESCE(SUM(harvest_quantity), 0) as total_harvest
+        FROM crops
+        WHERE region IS NOT NULL
+        GROUP BY region
+        ORDER BY crop_count DESC
+    """)
+    data = cursor.fetchall()
+    conn.close()
+    return data
+
+
+def get_price_trends():
+    conn = connect()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            crop_name,
+            average_price,
+            recorded_date
+        FROM price_history
+        ORDER BY recorded_date ASC
+    """)
+    data = cursor.fetchall()
+    conn.close()
+    return data

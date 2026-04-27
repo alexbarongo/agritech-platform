@@ -6,7 +6,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from services.database import create_tables, migrate_crops_table, migrate_expenses_table
 
-from api.routes import auth, crops, expenses, profile, reports
+from api.routes import auth, crops, expenses, profile, reports, public
 
 TEMPLATES_DIR = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "..", "templates"
@@ -35,6 +35,7 @@ app.include_router(crops.router, prefix="/crops", tags=["Crops"])
 app.include_router(expenses.router, prefix="/expenses", tags=["Expenses"])
 app.include_router(reports.router, prefix="/reports", tags=["Reports"])
 app.include_router(profile.router, prefix="/profile", tags=["Profile"])
+app.include_router(public.router, prefix="/public", tags=["public"])
 
 
 @app.get("/")
@@ -75,3 +76,13 @@ def reports_page():
 @app.get("/profile-page")
 def profile_page():
     return FileResponse(os.path.join(TEMPLATES_DIR, "profile.html"))
+
+
+@app.get("/stats-page")
+def stats_page():
+    return FileResponse(os.path.join(TENPLATES_DIR, "stats.html"))
+
+
+@app.get("/admin")
+def admin_page():
+    return FileResponse(os.path.join(TEMPLATES_DIR, "admin.html"))
