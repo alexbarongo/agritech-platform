@@ -1,14 +1,14 @@
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
+from services.auth import get_current_user
 from services.database import (
-    get_public_stats,
-    get_top_crops_by_price,
-    get_crops_by_region,
-    get_price_trends,
     add_news,
     delete_news,
+    get_crops_by_region,
+    get_price_trends,
+    get_public_stats,
+    get_top_crops_by_price,
 )
-from service.auth import get_current_user
 
 router = APIRouter()
 
