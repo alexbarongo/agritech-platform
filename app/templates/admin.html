@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AgriTech — Admin Panel</title>
+    <link href="/static/css/style.css" rel="stylesheet" />
+  </head>
+  <body class="auth-page">
+    <div
+      class="stats-header"
+      style="position: fixed; top: 0; width: 100%; z-index: 100"
+    >
+      <div class="stats-header-left">
+        <h1>🌱 AgriTech Admin</h1>
+      </div>
+      <div class="stats-header-right">
+        <button
+          id="logout-btn"
+          class="btn-secondary-outline"
+          style="
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+          "
+        >
+          Sign Out
+        </button>
+      </div>
+    </div>
+
+    <div style="max-width: 800px; margin: 100px auto 40px; padding: 0 24px">
+      <div class="section">
+        <h2 style="color: #1a4731; margin-bottom: 24px">📰 Publish News</h2>
+        <div class="form-group">
+          <label>Title</label>
+          <input
+            type="text"
+            id="news-title"
+            placeholder="e.g. Maize prices rise in Dodoma"
+          />
+        </div>
+        <div class="form-group">
+          <label>Content</label>
+          <textarea
+            id="news-content"
+            rows="5"
+            placeholder="Write your news or update here..."
+            style="
+              width: 100%;
+              padding: 12px 16px;
+              border: 2px solid #e2e8f0;
+              border-radius: 8px;
+              font-size: 1rem;
+              resize: vertical;
+              font-family: inherit;
+            "
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label>Author</label>
+          <input type="text" id="news-author" value="AgriTech Team" />
+        </div>
+        <div id="news-success" class="success-message hidden">
+          News published successfully.
+        </div>
+        <div id="news-error" class="error-message hidden"></div>
+        <button id="publish-btn" class="btn-primary">Publish News</button>
+      </div>
+
+      <div class="section">
+        <h2 style="color: #1a4731; margin-bottom: 24px">📋 Published News</h2>
+        <div id="admin-news-list">
+          <p class="loading">Loading...</p>
+        </div>
+      </div>
+    </div>
+
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/admin.js"></script>
+  </body>
+</html>
